@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class InvertedIndex {
 
 
-	public void queryEvaluation(String str,Map<String, ArrayList<Document>> dictionary) {
+	public void queryEvaluation(String str,Map<String, ArrayList<Integer>> dictionary) {
 
 		KrovetzStemmer kroStemmer = new KrovetzStemmer();
 
@@ -40,13 +40,13 @@ public class InvertedIndex {
 	}
 
 
-
 	public void writeDictionaryToFile(Map<String, ArrayList<Document>> dictionary) throws IOException {
 
 		//saving Dictionary to a file
 		FileWriter fstream; 
 		BufferedWriter out; 
-		fstream = new FileWriter("/Users/vaishalibisht/Desktop/documents.txt"); 
+	//	fstream = new FileWriter("/Users/vaishalibisht/Desktop/invertedIdx.txt"); 
+		fstream = new FileWriter("./invertedIdx.txt"); 
 		out = new BufferedWriter(fstream); 
 
  
@@ -64,21 +64,12 @@ public class InvertedIndex {
 		out.close(); 
 	}
 	
-	
-	
-//	
-//	public void createInvertedIndex(File file) {
-//		
-//		
-//	}
-//	
-	
 
-	public void loadInvertedIdx() throws IOException {
+	public Map<String, ArrayList<Integer>> loadInvertedIdxFromFile() throws IOException {
 		
 		Map<String, ArrayList<Integer>> newDict = new TreeMap<>(); 
 		
-		File file =  new File("/Users/vaishalibisht/Desktop/documents.txt"); 
+		File file =  new File("./invertedIdx.txt"); 
 		BufferedReader br = new BufferedReader(new FileReader(file));		
 		String st;
 		
@@ -104,18 +95,12 @@ public class InvertedIndex {
 		
 		System.out.println("NEW DICT************");
 		System.out.println(newDict);
+		return newDict;
 	}
 	
 	
-	
-	
-	
-	
+	public Map<String, ArrayList<Document>> createInvertedIndex (File file) throws IOException {
 
-	public static void main(String[] args) throws Exception 
-	{ 
-
-		InvertedIndex invIndex = new InvertedIndex();
 		Map<String, ArrayList<Document>> dictionary = new TreeMap<>(); 
 
 		ArrayList<Document> documentList = new ArrayList<>();
@@ -136,7 +121,6 @@ public class InvertedIndex {
 		int docId = 0;
 
 		// pass the path to the file as a parameter 
-		File file =  new File("/Users/vaishalibisht/Desktop/SFSU/CSC849-SearchEngines/documents.txt"); 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 
 		while ((st = br.readLine()) != null) {
@@ -159,7 +143,6 @@ public class InvertedIndex {
 						documentList.add(new Document(stemmedWord, docId));
 						uniqueDocuments.add(stemmedWord);
 					}
-
 				}	
 			}
 		}
@@ -176,17 +159,25 @@ public class InvertedIndex {
 			dictionary.put(currentTerm, currentlist);   // update dict
 		}
 
-
-		System.out.println("dictionary+++++++++");
+		return dictionary;
+		//System.out.println("dictionary+++++++++");
 		//System.out.println(dictionary);
+	}	
+	
+	
+	public static void main(String[] args) throws Exception 
+	{ 
+		InvertedIndex invIndex = new InvertedIndex();
 
-
+		File docfile =  new File("./documents.txt");
 		String query1 = "GREAT AND TABLET";
 		String query2 = "aSus AND gOOgle";
 
-		invIndex.queryEvaluation(query2, dictionary);
+		Map<String, ArrayList<Document>> dictionary = invIndex.createInvertedIndex(docfile);
 		invIndex.writeDictionaryToFile(dictionary);
-		invIndex.loadInvertedIdx();
+		Map<String, ArrayList<Integer>> newDict = invIndex.loadInvertedIdxFromFile();
+		invIndex.queryEvaluation(query1, newDict);
+		
 
 		System.err.println("end");
 	} 

@@ -3,26 +3,10 @@ import java.util.Map;
 
 public class BooleanQueryEval {
 	
-	
-	
-	public ArrayList<Integer> queryEval(String term1, String term2, Map<String, ArrayList<Document>> dict) {
+	public ArrayList<Integer> queryEval(String term1, String term2, Map<String, ArrayList<Integer>> dict) {
 		
-
-	  ArrayList<Integer> p1 = new ArrayList<>();
-	  ArrayList<Integer> p2 = new ArrayList<>();
-	  
-	//adding docsIds to new Arraylist of type integer
-	  ArrayList<Document> doc1 = dict.get(term1);
-	  for(Document i : doc1) {
-		  p1.add(i.getDocId());
-	  }
-	  
-	  ArrayList<Document> doc2 = dict.get(term2);
-	  for(Document i : doc2) {
-		  p2.add(i.getDocId());
-			// System.out.print("->" + i.getDocId());
-	  }
-				
+	  ArrayList<Integer> p1 = dict.get(term1);
+	  ArrayList<Integer> p2 = dict.get(term2);	
 	  ArrayList<Integer>  result = new ArrayList<>();
 			
 		int i =0, j=0;
