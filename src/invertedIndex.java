@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.lemurproject.kstem.KrovetzStemmer;
 import java.io.*;
+import java.nio.file.ReadOnlyFileSystemException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -62,23 +63,54 @@ public class InvertedIndex {
 		} 
 		out.close(); 
 	}
+	
+	
+	
+//	
+//	public void createInvertedIndex(File file) {
+//		
+//		
+//	}
+//	
+	
 
-	public void readFile() throws IOException {
+	public void loadInvertedIdx() throws IOException {
+		
+		Map<String, ArrayList<Integer>> newDict = new TreeMap<>(); 
 		
 		File file =  new File("/Users/vaishalibisht/Desktop/documents.txt"); 
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		
+		BufferedReader br = new BufferedReader(new FileReader(file));		
 		String st;
 		
 		while ((st = br.readLine()) != null) {
 			
+			st = st.replaceAll("\\s","");
+			st = st.replace("[","");
+			st = st.replace("]","");
+			String[] splitStr = st.split(",");
+			for (String word: splitStr) {
+			System.out.println(word);
+			}
+			
+			ArrayList<Integer> postingList = new ArrayList<Integer>();
+	
+			for(int i=2; i< splitStr.length; i++) {
+				postingList.add(Integer.parseInt(splitStr[i]));
+			}
+			
+			newDict.put(splitStr[0], postingList);
 		}
-		
 		br.close();
+		
+		System.out.println("NEW DICT************");
+		System.out.println(newDict);
 	}
 	
 	
-
+	
+	
+	
+	
 
 	public static void main(String[] args) throws Exception 
 	{ 
@@ -86,12 +118,10 @@ public class InvertedIndex {
 		InvertedIndex invIndex = new InvertedIndex();
 		Map<String, ArrayList<Document>> dictionary = new TreeMap<>(); 
 
-
 		ArrayList<Document> documentList = new ArrayList<>();
 		HashSet<String> uniqueDocuments = new HashSet<>();
 		KrovetzStemmer stemmer = new KrovetzStemmer();
 		
-
 		HashSet<String> stopWords = new HashSet<>();
 		stopWords.add("the");
 		stopWords.add("is");
@@ -148,7 +178,7 @@ public class InvertedIndex {
 
 
 		System.out.println("dictionary+++++++++");
-		System.out.println(dictionary);
+		//System.out.println(dictionary);
 
 
 		String query1 = "GREAT AND TABLET";
@@ -156,8 +186,9 @@ public class InvertedIndex {
 
 		invIndex.queryEvaluation(query2, dictionary);
 		invIndex.writeDictionaryToFile(dictionary);
+		invIndex.loadInvertedIdx();
 
-
+		System.err.println("end");
 	} 
 
 }
