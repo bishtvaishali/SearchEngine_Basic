@@ -1,12 +1,16 @@
 import java.util.ArrayList;
-import java.util.Map;
 
-public class BooleanQueryEval {
+
+public class Part2 {
 	
-	public ArrayList<Integer> queryEval(String term1, String term2, Map<String, ArrayList<Integer>> dict) {
-		
-	  ArrayList<Integer> p1 = dict.get(term1);
-	  ArrayList<Integer> p2 = dict.get(term2);	
+	
+	/*
+	 * method takes 2 arguments,  posting lists of term1 and term2.
+	 * intersects the two posting lists and return the common docIds in an ArrayList of Integer type
+	 */
+	
+	public ArrayList<Integer> intersect(ArrayList<Integer> p1, ArrayList<Integer> p2) {
+
 	  ArrayList<Integer>  result = new ArrayList<>();
 			
 		int i =0, j=0;

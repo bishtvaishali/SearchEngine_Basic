@@ -1,4 +1,6 @@
-
+/*
+ * it contains the term and its docId and checks 
+ */
 public class Document implements Comparable<Document>{
 	
 	String term;
@@ -21,6 +23,7 @@ public class Document implements Comparable<Document>{
 		this.docId = docId;
 	}
 	
+	//for sorting terms alphabetically and by docId
 	@Override
 	public int compareTo(Document o) {
 		if(this.term.equals(o.term)) {
