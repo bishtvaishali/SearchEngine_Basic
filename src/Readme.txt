@@ -11,11 +11,15 @@ https://sourceforge.net/projects/lemur/files/lemur/KrovetzStemmer-3.4/KrovetzSte
 Now browse the downloaded stemmer jar file. Click open.
 -Your file will appear in the Referenced libraries folder.
 
+
 RUN INSTRUCTIONS:
+
 -Put the "documents.txt" file in the current directory. The program will automatically look for the file in the current directory.
-Part1 will create the Inverted Index.
-Part2 will intersect the posting lists of two terms in query.
-Part 3:
+
+Part1: 
+It will create the Inverted Index and store it in a map
+
+Part2:
 -The 3 queries which are to be processed are in the main method of the program.
 -In the beginning of the program, It will first invoke part1 to create Inverted Index. 
 -Then it will write the Inverted index to a file "invertedIdx.txt" in your current directory.

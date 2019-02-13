@@ -12,45 +12,6 @@ import org.lemurproject.kstem.KrovetzStemmer;
 public class Part1 {
 
 	/*
-	 * class sorts the terms alphabetically and by docId.
-	 * sorting is done by implementing comparable.
-	 */
-	public class Document implements Comparable<Document>{
-
-		String term;
-		Integer docId;
-
-		public Document(String word, int docId) {
-			this.term = word;
-			this.docId = docId;
-		}
-		public String getTerm() {
-			return term;
-		}
-		public void setTerm(String term) {
-			this.term = term;
-		}
-		public Integer getDocId() {
-			return docId;
-		}
-		public void setDocId(Integer docId) {
-			this.docId = docId;
-		}
-
-		//for sorting terms alphabetically and by docId
-		@Override
-		public int compareTo(Document o) {
-			if(this.term.equals(o.term)) {
-				return this.docId - o.docId;
-			} else {
-				return this.term.compareTo(o.term);
-			}
-		}
-
-	}
-
-
-	/*
 	 * method is used to created Inverted Index. It takes a text file as a parameter.
 	 * It parses the file step by step(tokenization, normalization, stemming, stop words removal) 
 	 * and stores the terms, Doc Freq and Posting list in a dictionary(TreeMap). 
@@ -116,6 +77,47 @@ public class Part1 {
 		return dictionary;
 
 	}	
+
+
+	/*
+	 * class sorts the terms alphabetically and by docId.
+	 * sorting is done by implementing comparable.
+	 */
+	public class Document implements Comparable<Document>{
+
+		String term;
+		Integer docId;
+
+		public Document(String word, int docId) {
+			this.term = word;
+			this.docId = docId;
+		}
+		public String getTerm() {
+			return term;
+		}
+		public void setTerm(String term) {
+			this.term = term;
+		}
+		public Integer getDocId() {
+			return docId;
+		}
+		public void setDocId(Integer docId) {
+			this.docId = docId;
+		}
+
+		//for sorting terms alphabetically and by docId
+		@Override
+		public int compareTo(Document o) {
+			if(this.term.equals(o.term)) {
+				return this.docId - o.docId;
+			} else {
+				return this.term.compareTo(o.term);
+			}
+		}
+
+	}
+
+
 
 
 }
