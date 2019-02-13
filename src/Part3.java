@@ -11,25 +11,29 @@ import java.util.ArrayList;
 
 public class Part3 {
 
+	final String PATH = "./invertedIdx.txt"; //location where invertedIndex file will be stored
+
+
 
 	/*
 	 * takes two arguments - query and Dictionary
 	 * preProcess the query(tokenization, normalization...)
 	 * invokes method "intersect" of Part2 for intersection
+	 * 
 	 */
 	public void queryEvaluation(String query, Map<String, ArrayList<Integer>> dictionary) throws IOException {
 
 
 		//preProcessing query
 		String[] splitStr = query.split(" ");
-				
+
 		for(int i =0 ; i< splitStr.length; i++) {
 			splitStr[i] = splitStr[i].toLowerCase();
 		}
-;
+		;
 		if(splitStr[1].equals("and")) {
 			KrovetzStemmer kroStemmer = new KrovetzStemmer();
-			
+
 			String term1 = kroStemmer.stem(splitStr[0]);
 			String term2 = kroStemmer.stem(splitStr[2]);
 
@@ -53,10 +57,10 @@ public class Part3 {
 				bufferedWriter.close();
 			}
 		}else {
-			
+
 			System.out.println("Cannot process query for " + splitStr[1] + "operator");
 		}
-	
+
 	}
 
 
@@ -66,22 +70,24 @@ public class Part3 {
 	 * create and write the Dictionary to a text file , "invertedIdx" in the current directory
 	 */
 
-	public void writeDictionaryToFile( Map<String, ArrayList<Document>> dictionary ) throws IOException {
+	public void writeDictionaryToFile( Map<String, ArrayList<Part1.Document>> dictionary ) throws IOException {
 
 		//saving Dictionary to a file
 		FileWriter fstream; 
 		BufferedWriter out; 
 
-		fstream = new FileWriter("./invertedIdx.txt"); 
+
+
+		fstream = new FileWriter(PATH); 
 		out = new BufferedWriter(fstream); 
 
-		for (Map.Entry<String, ArrayList<Document>> entry : dictionary.entrySet())
+		for (Map.Entry<String, ArrayList<Part1.Document>> entry : dictionary.entrySet())
 		{
 			// System.out.println("key: " + entry.getKey() + "; value: " + entry.getValue());
-			ArrayList<Document> docArrList = entry.getValue();
+			ArrayList<Part1.Document> docArrList = entry.getValue();
 			ArrayList<Integer> intArrList = new ArrayList<>();
 
-			for(Document i : docArrList) {
+			for(Part1.Document i : docArrList) {
 				intArrList.add(i.getDocId());
 			}
 			out.write(entry.getKey() + "," + intArrList.size()+ "," + intArrList  + "\n"); 
@@ -100,7 +106,7 @@ public class Part3 {
 
 		Map<String, ArrayList<Integer>> newDict = new TreeMap<>(); 
 
-		File file =  new File("./invertedIdx.txt"); 
+		File file =  new File(PATH); 
 		BufferedReader br = new BufferedReader(new FileReader(file));		
 		String st;
 
@@ -144,7 +150,7 @@ public class Part3 {
 		Part1 part1 = new Part1();
 
 		//part2 creates an inverted index and returns a dictionary
-		Map<String, ArrayList<Document>> dictionary = part1.createInvertedIndex(docfile);
+		Map<String, ArrayList<Part1.Document>> dictionary = part1.createInvertedIndex(docfile);
 		part3.writeDictionaryToFile(dictionary);// a file is created with a name "invertedIdx.txt"
 		Map<String, ArrayList<Integer>> newDict = part3.loadInvertedIdxFromFile(); //load the invertedIndx from file "invertedIdx.txt" into a Dictionary 
 

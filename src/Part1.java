@@ -11,19 +11,55 @@ import org.lemurproject.kstem.KrovetzStemmer;
 
 public class Part1 {
 
-	
-	
+	/*
+	 * class sorts the terms alphabetically and by docId.
+	 * sorting is done by implementing comparable.
+	 */
+	public class Document implements Comparable<Document>{
+
+		String term;
+		Integer docId;
+
+		public Document(String word, int docId) {
+			this.term = word;
+			this.docId = docId;
+		}
+		public String getTerm() {
+			return term;
+		}
+		public void setTerm(String term) {
+			this.term = term;
+		}
+		public Integer getDocId() {
+			return docId;
+		}
+		public void setDocId(Integer docId) {
+			this.docId = docId;
+		}
+
+		//for sorting terms alphabetically and by docId
+		@Override
+		public int compareTo(Document o) {
+			if(this.term.equals(o.term)) {
+				return this.docId - o.docId;
+			} else {
+				return this.term.compareTo(o.term);
+			}
+		}
+
+	}
+
+
 	/*
 	 * method is used to created Inverted Index. It takes a text file as a parameter.
 	 * It parses the file step by step(tokenization, normalization, stemming, stop words removal) 
 	 * and stores the terms, Doc Freq and Posting list in a dictionary(TreeMap). 
-	 * We have created a Document class for sorting the terms by implementing comparable.
 	 */
 	public Map<String, ArrayList<Document>> createInvertedIndex (File file) throws IOException {
 
 		Map<String, ArrayList<Document>> dictionary = new TreeMap<>(); 
 		ArrayList<Document> documentList = new ArrayList<>();		
-		
+
 		//we create a uniqueDocuments for every document and check for duplicate words.
 		HashSet<String> uniqueDocuments = new HashSet<>();
 		HashSet<String> stopWords = new HashSet<>();
@@ -36,7 +72,7 @@ public class Part1 {
 		stopWords.add("a");
 
 		KrovetzStemmer stemmer = new KrovetzStemmer();
-		
+
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String[] splitStr;
 		String st;
@@ -50,11 +86,10 @@ public class Part1 {
 				uniqueDocuments = new HashSet<>();	
 			}else {		
 				splitStr = st.split("\\W+");
-				
+
 				for(int i =0 ; i< splitStr.length; i++) {
 					splitStr[i] = splitStr[i].toLowerCase();
 				}
-			
 				//System.out.println(Arrays.toString(splitStr));
 				for (String word: splitStr) {
 					String stemmedWord = stemmer.stem(word);
@@ -69,19 +104,17 @@ public class Part1 {
 
 		br.close();
 
-		//System.out.println(documentList);
-		// sorted by terms and docIds
-
-		//Updating dictionary 
+		// Document list is sorted by terms and docIds
+		//Creating a dictionary with sorted Document list 
 		for (Document document : documentList) {
 			String currentTerm = document.getTerm();
 			ArrayList<Document> currentlist = dictionary.getOrDefault(currentTerm, new ArrayList<Document>());
 			currentlist.add(document);
-			dictionary.put(currentTerm, currentlist);   // update dict
+			dictionary.put(currentTerm, currentlist); 
 		}
 
 		return dictionary;
-		//System.out.println(dictionary);
+
 	}	
 
 
